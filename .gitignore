@@ -1,0 +1,15 @@
+# ignore everything in the folder
+/*
+
+# allow git to enter the coding folder
+!coding/
+
+#ignore everything inside coding by default
+coding/*
+
+#unignore the two python scripts
+!coding/test_model.py
+!coding/train_baseline.py
+
+#unignore this .gitignore file
+!.gitignore
