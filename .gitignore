@@ -1,22 +1,22 @@
 # ignore everything in the folder
 /*
 
-# allow git to enter the coding folder
-!coding/
-!Logs/
-!Figures/
+# allow git to enter the scripts folder
+!scripts/
+!logs/
+!figures/
 
-#ignore everything inside coding by default
-coding/*
+#ignore everything inside scripts by default
+scripts/*
 
 #unignore scripts for github
-!coding/test_model1_baseline.py
-!coding/test_model2.py
-!coding/test_model3.py
-!coding/train_model1_baseline.py
-!coding/train_model2_fixed_dataleakage.py
-!coding/train_model3_diff_windowing.py
-!coding/visualise_results.ipynb
+!scripts/test_model1_baseline.py
+!scripts/test_model2.py
+!scripts/test_model3.py
+!scripts/train_model1_baseline.py
+!scripts/train_model2_fixed_dataleakage.py
+!scripts/train_model3_diff_windowing.py
+!scripts/visualise_results.ipynb
 
 #unignore this .gitignore file
 !.gitignore
