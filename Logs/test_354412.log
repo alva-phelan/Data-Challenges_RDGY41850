@@ -1,0 +1,19 @@
+Loading python/3.11.9-gcc-11.5.0-lcos74i
+  Loading requirement: glibc/2.34-gcc-11.5.0-pvxzd7x
+    gcc-runtime/11.5.0-gcc-11.5.0-ummhigh bzip2/1.0.8-gcc-11.5.0-zflzmmu
+    libmd/1.0.4-gcc-11.5.0-55erl6z libbsd/0.12.2-gcc-11.5.0-vi5swmx
+    expat/2.6.4-gcc-11.5.0-l7c6mcr ncurses/6.5-gcc-11.5.0-dmolxwk
+    readline/8.2-gcc-11.5.0-xfzlvrx gdbm/1.23-gcc-11.5.0-az3qhor
+    xz/5.4.6-gcc-11.5.0-pd2qfl7 zlib/1.3.1-gcc-11.5.0-4lchq6k
+    libxml2/2.13.4-gcc-11.5.0-yqs2dzp pigz/2.8-gcc-11.5.0-4mldkdl
+    zstd/1.5.6-gcc-11.5.0-rbv3mbv tar/1.34-gcc-11.5.0-cq5xmvr
+    gettext/0.22.5-gcc-11.5.0-trruhow libffi/3.4.6-gcc-11.5.0-axqykin
+    libxcrypt/4.4.35-gcc-11.5.0-ibrefxr openssl/3.4.0-gcc-11.5.0-jz6o2m7
+    sqlite/3.46.0-gcc-11.5.0-wfqbdy2 util-linux-uuid/2.40.2-gcc-11.5.0-wl67vxg
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/monai/utils/deprecate_utils.py:321: FutureWarning: monai.transforms.spatial.dictionary Orientationd.__init__:labels: Current default value of argument `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` was changed in version None from `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` to `labels=None`. Default value changed to None meaning that the transform now uses the 'space' of a meta-tensor, if applicable, to determine appropriate axis labels.
+  warn_deprecated(argname, msg, warning_category)
+Loading evaluation labels...
+Found 100 unseen scans for testing.
+Loading saved model brain...
+Starting evaluation scan...
+AUROC score: 0.6564

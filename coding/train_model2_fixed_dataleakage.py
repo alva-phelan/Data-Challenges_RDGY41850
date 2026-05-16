@@ -1,10 +1,11 @@
-#imports (taken from example notebook)
+#imports 
 import os, glob, random, math
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
 from torch.utils.data import random_split
+from sklearn.model_selection import GroupShuffleSplit
 
 import monai
 from monai.utils import set_determinism
@@ -31,105 +32,116 @@ from torchmetrics.classification import MultilabelAUROC, MultilabelF1Score, Mult
 DATA_DIR = "./ct_rate_data/dataset/train_fixed"
 LABEL_FILE ="./ct_rate_data/dataset/multi_abnormality_labels/train_predicted_labels.csv"
 #can edit these later
-BATCH_SIZE = 8 #increase to use gpu
+BATCH_SIZE = 4 #increase to use gpu
 EPOCHS = 30
-TRAIN_SIZE = 1000
 LR = 1e-4
-NUM_WORKERS = 1 #pin_memory=true
+NUM_WORKERS = 4 #pin_memory=true
 SEED = 12345
+total_scans = 1000
+max_volumes_per_patient = 2
+train_val_test_split = [0.7, 0.15, 0.15]
 
 #device and versions
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 set_determinism(SEED)
 
-#dataset class
-class CTRateDataset(Dataset):
-    def __init__(self, csv_file, root_dir, transform=None):
-        print("Loading labels from CSV...")
-        full_df = pd.read_csv(csv_file)
-        
-        self.root_dir = root_dir
-        self.transform = transform
+# Find Valid Files and Cap per Patient 
+raw_df = pd.read_csv(LABEL_FILE)
+valid_records = []
+patient_counts = {}
 
-        self.label_cols = [
-            "Medical material", "Arterial wall calcification", "Cardiomegaly", "Pericardial effusion",
-            "Coronary artery wall calcification", "Hiatal hernia", "Lymphadenopathy", "Emphysema",
-            "Atelectasis", "Lung nodule", "Lung opacity", "Pulmonary fibrotic sequela", "Pleural effusion",
-            "Mosaic attenuation pattern", "Peribronchial thickening", "Consolidation", "Bronchiectasis",
-            "Interlobular septal thickening"
-        ]
-
-        print("Scanning hard drive for valid images. This may take a few seconds...")
-        valid_records = []
-        
-        # check each row in the CSV to see if the file physically exists
-        for idx, row in full_df.iterrows():
-            raw_volume_name = row['VolumeName']
-            base_name = raw_volume_name.replace('.nii.gz', '')  
-            
-            parts = base_name.split('_')
-            folder_prefix = f"{parts[0]}_{parts[1]}"
-            patient_folder = base_name.rsplit('_', 1)[0] 
-            
-            path_fixed = f"./ct_rate_data/dataset/train_fixed/{folder_prefix}/{patient_folder}/{raw_volume_name}"
-            path_normal = f"./ct_rate_data/dataset/train/{folder_prefix}/{patient_folder}/{raw_volume_name}"
-            
-            # If we find the file, record its exact true path
-            if os.path.exists(path_fixed):
-                row_dict = row.to_dict()
-                row_dict['true_path'] = path_fixed
-                valid_records.append(row_dict)
-            elif os.path.exists(path_normal):
-                row_dict = row.to_dict()
-                row_dict['true_path'] = path_normal
-                valid_records.append(row_dict)
-                
-            # Once we find 100 valid patients that ACTUALLY exist, stop searching!
-            if len(valid_records) >= TRAIN_SIZE:
-                break
-                
-        self.labels_df = pd.DataFrame(valid_records)
-        print(f"Success! Found {len(self.labels_df)} valid CT scans for training.")
-
-    def __len__(self):
-        return len(self.labels_df)
-
-    def __getitem__(self, idx):
-        row = self.labels_df.iloc[idx]
-        img_path = row['true_path'] 
-        
-        labels = row[self.label_cols].values.astype('float32')
-        sample = {"image": img_path, "labels": labels}
-
-        if self.transform:
-            sample = self.transform(sample)
-
-        return sample
+print(f"Finding {total_scans} valid volumes...")
+for _, row in raw_df.iterrows():
+    vol_name = row['VolumeName']
+    pid = vol_name.rsplit('_', 1)[0]
     
-#monai transforms
-transforms = Compose([
+    # Cap volumes per patient
+    if patient_counts.get(pid, 0) >= max_volumes_per_patient:
+        continue
+        
+    # find the file path
+    base = vol_name.replace('.nii.gz', '')
+    prefix = f"{base.split('_')[0]}_{base.split('_')[1]}"
+    p_folder = base.rsplit('_', 1)[0]
+    
+    path_fixed = os.path.join(DATA_DIR, prefix, p_folder, vol_name)
+    path_orig = os.path.join("./ct_rate_data/dataset/train", prefix, p_folder, vol_name)
+    
+    actual_path = path_fixed if os.path.exists(path_fixed) else (path_orig if os.path.exists(path_orig) else None)
+    
+    if actual_path:
+        row_dict = row.to_dict()
+        row_dict['image_path'] = actual_path
+        row_dict['PatientID'] = pid
+        valid_records.append(row_dict)
+        patient_counts[pid] = patient_counts.get(pid, 0) + 1
+        
+    if len(valid_records) >= total_scans:
+        break
+
+master_df = pd.DataFrame(valid_records)
+
+# 3-Way Patient-level Split
+# Split test out first
+gss = GroupShuffleSplit(n_splits=1, test_size=0.3, random_state=SEED) # 30% for Val+Test
+train_idx, val_test_idx = next(gss.split(master_df, groups=master_df['PatientID']))
+train_df = master_df.iloc[train_idx]
+val_test_df = master_df.iloc[val_test_idx]
+
+# Split Val and Test
+gss_sub = GroupShuffleSplit(n_splits=1, test_size=0.5, random_state=SEED)
+val_idx, test_idx = next(gss_sub.split(val_test_df, groups=val_test_df['PatientID']))
+val_df = val_test_df.iloc[val_idx]
+test_df = val_test_df.iloc[test_idx]
+
+# save test set for separate script
+test_df.to_csv("test_patients_locked.csv", index=False)
+print(f"Final Counts -> Train: {len(train_df)}, Val: {len(val_df)}, Test: {len(test_df)}")
+
+# Dataset & Dataloaders 
+class CTRateDataset(Dataset):
+    def __init__(self, df, transform=None):
+        self.df = df
+        self.transform = transform
+        self.label_cols = ["Medical material", "Arterial wall calcification", "Cardiomegaly", "Pericardial effusion", "Coronary artery wall calcification", "Hiatal hernia", "Lymphadenopathy", "Emphysema", "Atelectasis", "Lung nodule", "Lung opacity", "Pulmonary fibrotic sequela", "Pleural effusion", "Mosaic attenuation pattern", "Peribronchial thickening", "Consolidation", "Bronchiectasis", "Interlobular septal thickening"]
+    def __len__(self): return len(self.df)
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+        sample = {"image": row['image_path'], "labels": row[self.label_cols].values.astype('float32')}
+        return self.transform(sample) if self.transform else sample
+    
+# Define Separate Transforms 
+# Training: Includes Augmentations
+train_transforms = Compose([
     LoadImaged(keys=["image"]),
     EnsureChannelFirstd(keys=["image"]),
     Orientationd(keys=["image"], axcodes="RAS"),
     Spacingd(keys=["image"], pixdim=(2.0, 2.0, 2.0), mode="bilinear"),
-    #augmentations
-    RandFlipd(keys=["image"], prob = 0.5, spatial_axis=0),
-    RandAffined(keys=["image"], prob = 0.5, rotate_range=(0.1, 0.1, 0.1), scale_range=(0.1,0.1,0.1)),
-    Resized(keys=["image"], spatial_size =(128, 128, 128)),
+    Resized(keys=["image"], spatial_size=(128, 128, 128)),
+    ScaleIntensityRanged(keys=["image"], a_min=-1000, a_max=400, b_min=0.0, b_max=1.0, clip=True),
+    RandFlipd(keys=["image"], prob=0.5, spatial_axis=0),
+    RandAffined(keys=["image"], prob=0.5, rotate_range=(0.1, 0.1, 0.1), translate_range=(10, 10, 10)),
+    EnsureTyped(keys=["image", "labels"])
+])
+
+# Validation/Testing: Clean (No Flips or Rotations)
+val_transforms = Compose([
+    LoadImaged(keys=["image"]),
+    EnsureChannelFirstd(keys=["image"]),
+    Orientationd(keys=["image"], axcodes="RAS"),
+    Spacingd(keys=["image"], pixdim=(2.0, 2.0, 2.0), mode="bilinear"),
+    Resized(keys=["image"], spatial_size=(128, 128, 128)),
     ScaleIntensityRanged(keys=["image"], a_min=-1000, a_max=400, b_min=0.0, b_max=1.0, clip=True),
     EnsureTyped(keys=["image", "labels"])
-])      
+])
 
-#initialize data 
-dataset = CTRateDataset(csv_file=LABEL_FILE, root_dir=DATA_DIR, transform=transforms)
-#test and val split
-train_size = int(0.8 * len(dataset))
-val_size = len(dataset) - train_size
-train_records, val_records = random_split(dataset, [train_size, val_size])
+train_ds = CTRateDataset(train_df, transform=train_transforms)
+val_ds = CTRateDataset(val_df, transform=val_transforms)
 
-train_loader = DataLoader(train_records, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS, pin_memory = True)
-val_loader = DataLoader(val_records, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS, pin_memory = True)
+train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+val_loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
+
 
 print(f"Building 3D ResNet50 on: {device}")
 
@@ -148,9 +160,7 @@ pr_auc_metric = MultilabelAveragePrecision(num_labels=18, average="macro").to(de
 def train():
 
     #row numbers used for training split
-    train_indices = train_records.indices
-    #pull only label columns for those specific training rows 
-    train_labels_df = dataset.labels_df.iloc[train_indices][dataset.label_cols]
+    train_labels_df = train_ds.df[train_ds.label_cols]
     #convert to python tensor
     all_labels = torch.tensor(train_labels_df.values, dtype=torch.float32)
 
@@ -190,8 +200,8 @@ def train():
             running_loss += loss.item()
 
             #heartbeat to see if running
-            #if batch_idx % 20 == 0:
-                #print(f"Epoch {epoch+1}: Batch {batch_idx}/{len(train_loader)} processed...")
+            if batch_idx % 10 == 0:
+                print(f"Epoch {epoch+1}: Batch {batch_idx}/{len(train_loader)} processed...")
 
         avg_train_loss = running_loss/len(train_loader)
 

@@ -1,0 +1,92 @@
+Loading python/3.11.9-gcc-11.5.0-lcos74i
+  Loading requirement: glibc/2.34-gcc-11.5.0-pvxzd7x
+    gcc-runtime/11.5.0-gcc-11.5.0-ummhigh bzip2/1.0.8-gcc-11.5.0-zflzmmu
+    libmd/1.0.4-gcc-11.5.0-55erl6z libbsd/0.12.2-gcc-11.5.0-vi5swmx
+    expat/2.6.4-gcc-11.5.0-l7c6mcr ncurses/6.5-gcc-11.5.0-dmolxwk
+    readline/8.2-gcc-11.5.0-xfzlvrx gdbm/1.23-gcc-11.5.0-az3qhor
+    xz/5.4.6-gcc-11.5.0-pd2qfl7 zlib/1.3.1-gcc-11.5.0-4lchq6k
+    libxml2/2.13.4-gcc-11.5.0-yqs2dzp pigz/2.8-gcc-11.5.0-4mldkdl
+    zstd/1.5.6-gcc-11.5.0-rbv3mbv tar/1.34-gcc-11.5.0-cq5xmvr
+    gettext/0.22.5-gcc-11.5.0-trruhow libffi/3.4.6-gcc-11.5.0-axqykin
+    libxcrypt/4.4.35-gcc-11.5.0-ibrefxr openssl/3.4.0-gcc-11.5.0-jz6o2m7
+    sqlite/3.46.0-gcc-11.5.0-wfqbdy2 util-linux-uuid/2.40.2-gcc-11.5.0-wl67vxg
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/monai/utils/deprecate_utils.py:321: FutureWarning: monai.transforms.spatial.dictionary Orientationd.__init__:labels: Current default value of argument `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` was changed in version None from `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` to `labels=None`. Default value changed to None meaning that the transform now uses the 'space' of a meta-tensor, if applicable, to determine appropriate axis labels.
+  warn_deprecated(argname, msg, warning_category)
+Loading labels from CSV...
+Scanning hard drive for valid images. This may take a few seconds...
+Success! Found 1000 valid CT scans for training.
+Building 3D ResNet50 on: cuda
+Calculated Class Weights: tensor([ 8.7561,  1.9304,  6.8431, 13.8148,  2.4483,  5.5574,  3.9383,  3.5198,
+         2.5088,  1.0888,  1.9963,  4.0955,  7.6022, 12.3333,  9.3896,  4.6738,
+         8.3023, 16.3913], device='cuda:0')
+Starting Training...
+Epoch 1/30 | Train Loss: 1.1290
+Epoch 1/30 | Val Loss: 1.0797 | AUROC: 0.6544 | PR-AUC: 0.3225 | F1: 0.2712
+Val loss improved from inf to 1.0797. Saving model
+Epoch 2/30 | Train Loss: 1.0903
+Epoch 2/30 | Val Loss: 1.0898 | AUROC: 0.6569 | PR-AUC: 0.3196 | F1: 0.3298
+Epoch 3/30 | Train Loss: 1.0652
+Epoch 3/30 | Val Loss: 1.0306 | AUROC: 0.6707 | PR-AUC: 0.3115 | F1: 0.2987
+Val loss improved from 1.0797 to 1.0306. Saving model
+Epoch 4/30 | Train Loss: 1.0410
+Epoch 4/30 | Val Loss: 1.1953 | AUROC: 0.6609 | PR-AUC: 0.3221 | F1: 0.2427
+Epoch 5/30 | Train Loss: 1.0403
+Epoch 5/30 | Val Loss: 1.0442 | AUROC: 0.6687 | PR-AUC: 0.3234 | F1: 0.3514
+Epoch 6/30 | Train Loss: 1.0325
+Epoch 6/30 | Val Loss: 1.0427 | AUROC: 0.6742 | PR-AUC: 0.3282 | F1: 0.3024
+Epoch 7/30 | Train Loss: 1.0008
+Epoch 7/30 | Val Loss: 0.9922 | AUROC: 0.6993 | PR-AUC: 0.3440 | F1: 0.3635
+Val loss improved from 1.0306 to 0.9922. Saving model
+Epoch 8/30 | Train Loss: 0.9841
+Epoch 8/30 | Val Loss: 1.0975 | AUROC: 0.6951 | PR-AUC: 0.3500 | F1: 0.3574
+Epoch 9/30 | Train Loss: 0.9844
+Epoch 9/30 | Val Loss: 1.2137 | AUROC: 0.6941 | PR-AUC: 0.3635 | F1: 0.2959
+Epoch 10/30 | Train Loss: 0.9611
+Epoch 10/30 | Val Loss: 1.0902 | AUROC: 0.6993 | PR-AUC: 0.3321 | F1: 0.3584
+Epoch 11/30 | Train Loss: 0.9515
+Epoch 11/30 | Val Loss: 0.9672 | AUROC: 0.7256 | PR-AUC: 0.3730 | F1: 0.3384
+Val loss improved from 0.9922 to 0.9672. Saving model
+Epoch 12/30 | Train Loss: 0.9225
+Epoch 12/30 | Val Loss: 1.0065 | AUROC: 0.7251 | PR-AUC: 0.3685 | F1: 0.3795
+Epoch 13/30 | Train Loss: 0.9021
+Epoch 13/30 | Val Loss: 0.9980 | AUROC: 0.7402 | PR-AUC: 0.3845 | F1: 0.3971
+Epoch 14/30 | Train Loss: 0.8900
+Epoch 14/30 | Val Loss: 0.9592 | AUROC: 0.7518 | PR-AUC: 0.4002 | F1: 0.4065
+Val loss improved from 0.9672 to 0.9592. Saving model
+Epoch 15/30 | Train Loss: 0.8481
+Epoch 15/30 | Val Loss: 0.9245 | AUROC: 0.7552 | PR-AUC: 0.4131 | F1: 0.4145
+Val loss improved from 0.9592 to 0.9245. Saving model
+Epoch 16/30 | Train Loss: 0.8358
+Epoch 16/30 | Val Loss: 0.9491 | AUROC: 0.7668 | PR-AUC: 0.4357 | F1: 0.3991
+Epoch 17/30 | Train Loss: 0.7951
+Epoch 17/30 | Val Loss: 1.0074 | AUROC: 0.7852 | PR-AUC: 0.4695 | F1: 0.4443
+Epoch 18/30 | Train Loss: 0.7439
+Epoch 18/30 | Val Loss: 0.9738 | AUROC: 0.7775 | PR-AUC: 0.4673 | F1: 0.4253
+Epoch 19/30 | Train Loss: 0.7145
+Epoch 19/30 | Val Loss: 1.0108 | AUROC: 0.7898 | PR-AUC: 0.5002 | F1: 0.4616
+Epoch 20/30 | Train Loss: 0.6895
+Epoch 20/30 | Val Loss: 0.9352 | AUROC: 0.8038 | PR-AUC: 0.5372 | F1: 0.4806
+Epoch 21/30 | Train Loss: 0.6394
+Epoch 21/30 | Val Loss: 0.9927 | AUROC: 0.8157 | PR-AUC: 0.5799 | F1: 0.5222
+Epoch 22/30 | Train Loss: 0.5904
+Epoch 22/30 | Val Loss: 1.0480 | AUROC: 0.8167 | PR-AUC: 0.5699 | F1: 0.5110
+Epoch 23/30 | Train Loss: 0.5833
+Epoch 23/30 | Val Loss: 0.9479 | AUROC: 0.8223 | PR-AUC: 0.5903 | F1: 0.5181
+Epoch 24/30 | Train Loss: 0.5344
+Epoch 24/30 | Val Loss: 0.9155 | AUROC: 0.8323 | PR-AUC: 0.6319 | F1: 0.5183
+Val loss improved from 0.9245 to 0.9155. Saving model
+Epoch 25/30 | Train Loss: 0.4894
+Epoch 25/30 | Val Loss: 1.0331 | AUROC: 0.8442 | PR-AUC: 0.6520 | F1: 0.5643
+Epoch 26/30 | Train Loss: 0.4578
+Epoch 26/30 | Val Loss: 0.8682 | AUROC: 0.8725 | PR-AUC: 0.7161 | F1: 0.5997
+Val loss improved from 0.9155 to 0.8682. Saving model
+Epoch 27/30 | Train Loss: 0.4201
+Epoch 27/30 | Val Loss: 0.9733 | AUROC: 0.8708 | PR-AUC: 0.7068 | F1: 0.6066
+Epoch 28/30 | Train Loss: 0.4185
+Epoch 28/30 | Val Loss: 0.8646 | AUROC: 0.8762 | PR-AUC: 0.7305 | F1: 0.6029
+Val loss improved from 0.8682 to 0.8646. Saving model
+Epoch 29/30 | Train Loss: 0.3583
+Epoch 29/30 | Val Loss: 0.9680 | AUROC: 0.8796 | PR-AUC: 0.7349 | F1: 0.6187
+Epoch 30/30 | Train Loss: 0.3389
+Epoch 30/30 | Val Loss: 0.9018 | AUROC: 0.8878 | PR-AUC: 0.7471 | F1: 0.6153
+Training Complete. Model saved to resnet50_baseline_best.pth
