@@ -20,22 +20,16 @@ from monai.inferers import SimpleInferer
 
 from torchmetrics.classification import MultilabelAUROC, MultilabelF1Score, MultilabelAveragePrecision
 
-#things to try:
-#change loss
-#try windowing (ITK slice to visualise)
-
-# nvidia-smi -> need to fully use the memory on the gpu
-# ssh into the sonic node that is running, then nvidia
 
 #config
 DATA_DIR = "./ct_rate_data/dataset/train_fixed"
 LABEL_FILE ="./ct_rate_data/dataset/multi_abnormality_labels/train_predicted_labels.csv"
 #can edit these later
-BATCH_SIZE = 8 #increase to use gpu
+BATCH_SIZE = 4 
 EPOCHS = 30
 TRAIN_SIZE = 1000
 LR = 1e-4
-NUM_WORKERS = 1 #pin_memory=true
+NUM_WORKERS = 1 
 SEED = 12345
 
 #device and versions

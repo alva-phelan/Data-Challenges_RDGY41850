@@ -21,21 +21,14 @@ from monai.inferers import SimpleInferer
 
 from torchmetrics.classification import MultilabelAUROC, MultilabelF1Score, MultilabelAveragePrecision
 
-#things to try:
-#change loss
-#try windowing (ITK slice to visualise)
-
-# nvidia-smi -> need to fully use the memory on the gpu
-# ssh into the sonic node that is running, then nvidia
-
 #config
 DATA_DIR = "./ct_rate_data/dataset/train_fixed"
 LABEL_FILE ="./ct_rate_data/dataset/multi_abnormality_labels/train_predicted_labels.csv"
 #can edit these later
-BATCH_SIZE = 4 #increase to use gpu
+BATCH_SIZE = 4 
 EPOCHS = 30
 LR = 1e-4
-NUM_WORKERS = 4 #pin_memory=true
+NUM_WORKERS = 4 
 SEED = 12345
 total_scans = 1000
 max_volumes_per_patient = 2
@@ -46,7 +39,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 set_determinism(SEED)
 
-# Find Valid Files and Cap per Patient 
+# Find valid files and cap per patient 
 raw_df = pd.read_csv(LABEL_FILE)
 valid_records = []
 patient_counts = {}
