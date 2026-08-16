@@ -1,0 +1,34 @@
+Loading python/3.11.9-gcc-11.5.0-lcos74i
+  Loading requirement: glibc/2.34-gcc-11.5.0-pvxzd7x
+    gcc-runtime/11.5.0-gcc-11.5.0-ummhigh bzip2/1.0.8-gcc-11.5.0-zflzmmu
+    libmd/1.0.4-gcc-11.5.0-55erl6z libbsd/0.12.2-gcc-11.5.0-vi5swmx
+    expat/2.6.4-gcc-11.5.0-l7c6mcr ncurses/6.5-gcc-11.5.0-dmolxwk
+    readline/8.2-gcc-11.5.0-xfzlvrx gdbm/1.23-gcc-11.5.0-az3qhor
+    xz/5.4.6-gcc-11.5.0-pd2qfl7 zlib/1.3.1-gcc-11.5.0-4lchq6k
+    libxml2/2.13.4-gcc-11.5.0-yqs2dzp pigz/2.8-gcc-11.5.0-4mldkdl
+    zstd/1.5.6-gcc-11.5.0-rbv3mbv tar/1.34-gcc-11.5.0-cq5xmvr
+    gettext/0.22.5-gcc-11.5.0-trruhow libffi/3.4.6-gcc-11.5.0-axqykin
+    libxcrypt/4.4.35-gcc-11.5.0-ibrefxr openssl/3.4.0-gcc-11.5.0-jz6o2m7
+    sqlite/3.46.0-gcc-11.5.0-wfqbdy2 util-linux-uuid/2.40.2-gcc-11.5.0-wl67vxg
+Config: EPOCHS=1, BATCH_SIZE=2, LR=0.0001
+Finding 20 valid volumes...
+Final Counts -> Train: 14, Val: 2, Test: 4
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/monai/utils/deprecate_utils.py:321: FutureWarning: monai.transforms.spatial.dictionary Orientationd.__init__:labels: Current default value of argument `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` was changed in version None from `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` to `labels=None`. Default value changed to None meaning that the transform now uses the 'space' of a meta-tensor, if applicable, to determine appropriate axis labels.
+  warn_deprecated(argname, msg, warning_category)
+Building 3D ResNet50 (multi-window, 3-channel input) on: cuda
+Calculated Class Weights: tensor([1.4000e+07, 7.5000e-01, 1.4000e+07, 1.4000e+07, 2.5000e+00, 6.0000e+00,
+        6.0000e+00, 6.0000e+00, 7.5000e-01, 6.0000e+00, 4.0000e-01, 6.0000e+00,
+        1.4000e+07, 1.4000e+07, 1.3333e+00, 7.5000e-01, 6.0000e+00, 1.4000e+07],
+       device='cuda:0')
+Starting Training...
+Epoch 1: Batch 0/7 processed...
+Epoch 1/1 | Train Loss: 0.8681
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/torchmetrics/utilities/prints.py:43: UserWarning: No positive samples in targets, true positive value should be meaningless. Returning zero tensor in true positive score
+  warnings.warn(*args, **kwargs)
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/torchmetrics/utilities/prints.py:43: UserWarning: No negative samples in targets, false positive value should be meaningless. Returning zero tensor in false positive score
+  warnings.warn(*args, **kwargs)
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/torchmetrics/utilities/prints.py:43: UserWarning: No positive samples found in target, recall is undefined. Setting recall to one for all thresholds.
+  warnings.warn(*args, **kwargs)
+Epoch 1/1 | Val Loss: 1.1810 | AUROC: 0.0000 | PR-AUC: 0.2778 | F1: 0.1667
+Val loss improved from inf to 1.1810. Saving model
+Training Complete. Model saved to resnet50_multiwindow_best.pth

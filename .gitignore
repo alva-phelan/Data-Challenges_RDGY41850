@@ -17,6 +17,10 @@ scripts/*
 !scripts/train_model2_fixed_dataleakage.py
 !scripts/train_model3_diff_windowing.py
 !scripts/visualise_results.ipynb
+!scripts/preprocessing_multiwindow.py
+!scripts/train_model4_pretrained2d_fm.py
+!scripts/train_model5_multiwindow_3d.py
+
 
 #unignore this .gitignore file
 !.gitignore
