@@ -20,6 +20,9 @@ scripts/*
 !scripts/preprocessing_multiwindow.py
 !scripts/train_model4_pretrained2d_fm.py
 !scripts/train_model5_multiwindow_3d.py
+!scripts/test_model4_pretrained2d_fm.py
+!scripts/test_model5_multiwindow_3d.py
+!requirements.txt
 
 
 #unignore this .gitignore file
