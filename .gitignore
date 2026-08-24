@@ -23,6 +23,7 @@ scripts/*
 !scripts/test_model4_pretrained2d_fm.py
 !scripts/test_model5_multiwindow_3d.py
 !requirements.txt
+!VLM3DChallenge_final_report.pdf
 
 
 #unignore this .gitignore file

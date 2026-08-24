@@ -1,0 +1,4 @@
+split,scans,patients
+Train,702,366
+Val,148,78
+Test,150,79

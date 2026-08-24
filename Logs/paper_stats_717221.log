@@ -1,0 +1,165 @@
+Loading python/3.11.9-gcc-11.5.0-lcos74i
+  Loading requirement: glibc/2.34-gcc-11.5.0-pvxzd7x
+    gcc-runtime/11.5.0-gcc-11.5.0-ummhigh bzip2/1.0.8-gcc-11.5.0-zflzmmu
+    libmd/1.0.4-gcc-11.5.0-55erl6z libbsd/0.12.2-gcc-11.5.0-vi5swmx
+    expat/2.6.4-gcc-11.5.0-l7c6mcr ncurses/6.5-gcc-11.5.0-dmolxwk
+    readline/8.2-gcc-11.5.0-xfzlvrx gdbm/1.23-gcc-11.5.0-az3qhor
+    xz/5.4.6-gcc-11.5.0-pd2qfl7 zlib/1.3.1-gcc-11.5.0-4lchq6k
+    libxml2/2.13.4-gcc-11.5.0-yqs2dzp pigz/2.8-gcc-11.5.0-4mldkdl
+    zstd/1.5.6-gcc-11.5.0-rbv3mbv tar/1.34-gcc-11.5.0-cq5xmvr
+    gettext/0.22.5-gcc-11.5.0-trruhow libffi/3.4.6-gcc-11.5.0-axqykin
+    libxcrypt/4.4.35-gcc-11.5.0-ibrefxr openssl/3.4.0-gcc-11.5.0-jz6o2m7
+    sqlite/3.46.0-gcc-11.5.0-wfqbdy2 util-linux-uuid/2.40.2-gcc-11.5.0-wl67vxg
+Finding 1000 valid volumes...
+
+============================================================
+DATASET STATISTICS
+============================================================
+
+Train: 702 scans, 366 patients
+
+Val: 148 scans, 78 patients
+
+Test: 150 scans, 79 patients
+
+Per-class positive count (and % of split) -- sorted by test-set prevalence:
+                             Class  Train_n  Train_pct  Val_n  Val_pct  Test_n  Test_pct
+                       Lung nodule      326       46.4     69     46.6      88      58.7
+       Arterial wall calcification      210       29.9     44     29.7      69      46.0
+Coronary artery wall calcification      182       25.9     37     25.0      60      40.0
+                      Lung opacity      234       33.3     53     35.8      52      34.7
+                       Atelectasis      184       26.2     45     30.4      45      30.0
+        Pulmonary fibrotic sequela      136       19.4     32     21.6      36      24.0
+                         Emphysema      134       19.1     38     25.7      35      23.3
+                   Lymphadenopathy      139       19.8     32     21.6      34      22.7
+                     Hiatal hernia      106       15.1     18     12.2      27      18.0
+                  Pleural effusion       69        9.8     12      8.1      25      16.7
+                     Consolidation      126       17.9     23     15.5      24      16.0
+                      Cardiomegaly       87       12.4     16     10.8      19      12.7
+                    Bronchiectasis       69        9.8     14      9.5      18      12.0
+                  Medical material       70       10.0     10      6.8      16      10.7
+    Interlobular septal thickening       48        6.8      6      4.1      10       6.7
+          Peribronchial thickening       70       10.0     14      9.5      10       6.7
+              Pericardial effusion       58        8.3      2      1.4       8       5.3
+        Mosaic attenuation pattern       50        7.1      8      5.4       8       5.3
+
+--- LaTeX rows (Class & Train n (%) & Val n (%) & Test n (%)) ---
+Lung nodule                            & 326 (46.4\%) & 69 (46.6\%) & 88 (58.7\%) \\
+Arterial wall calcification            & 210 (29.9\%) & 44 (29.7\%) & 69 (46.0\%) \\
+Coronary artery wall calcification     & 182 (25.9\%) & 37 (25.0\%) & 60 (40.0\%) \\
+Lung opacity                           & 234 (33.3\%) & 53 (35.8\%) & 52 (34.7\%) \\
+Atelectasis                            & 184 (26.2\%) & 45 (30.4\%) & 45 (30.0\%) \\
+Pulmonary fibrotic sequela             & 136 (19.4\%) & 32 (21.6\%) & 36 (24.0\%) \\
+Emphysema                              & 134 (19.1\%) & 38 (25.7\%) & 35 (23.3\%) \\
+Lymphadenopathy                        & 139 (19.8\%) & 32 (21.6\%) & 34 (22.7\%) \\
+Hiatal hernia                          & 106 (15.1\%) & 18 (12.2\%) & 27 (18.0\%) \\
+Pleural effusion                       & 69 (9.8\%) & 12 (8.1\%) & 25 (16.7\%) \\
+Consolidation                          & 126 (17.9\%) & 23 (15.5\%) & 24 (16.0\%) \\
+Cardiomegaly                           & 87 (12.4\%) & 16 (10.8\%) & 19 (12.7\%) \\
+Bronchiectasis                         & 69 (9.8\%) & 14 (9.5\%) & 18 (12.0\%) \\
+Medical material                       & 70 (10.0\%) & 10 (6.8\%) & 16 (10.7\%) \\
+Interlobular septal thickening         & 48 (6.8\%) & 6 (4.1\%) & 10 (6.7\%) \\
+Peribronchial thickening               & 70 (10.0\%) & 14 (9.5\%) & 10 (6.7\%) \\
+Pericardial effusion                   & 58 (8.3\%) & 2 (1.4\%) & 8 (5.3\%) \\
+Mosaic attenuation pattern             & 50 (7.1\%) & 8 (5.4\%) & 8 (5.3\%) \\
+
+============================================================
+HU INTENSITY RANGE SANITY CHECK
+============================================================
+Sampling 50 files across the actual training split, checking for the known CT-RATE +8192 offset issue...
+
+/scratch/19335683/vlm3d_challenge/dl_env/lib64/python3.9/site-packages/monai/utils/deprecate_utils.py:321: FutureWarning: monai.transforms.spatial.dictionary Orientationd.__init__:labels: Current default value of argument `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` was changed in version None from `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` to `labels=None`. Default value changed to None meaning that the transform now uses the 'space' of a meta-tensor, if applicable, to determine appropriate axis labels.
+  warn_deprecated(argname, msg, warning_category)
+                  file source     min    max  offset_suspected error
+train_10183_c_2.nii.gz  fixed -1024.0 1122.1             False  None
+train_10252_a_1.nii.gz  fixed -1024.0 2145.2             False  None
+train_10135_a_1.nii.gz  fixed -1024.0 1300.9             False  None
+train_10030_b_1.nii.gz  fixed -8192.0 5409.3             False  None
+train_10083_c_2.nii.gz  fixed -1024.0 1534.0             False  None
+train_10065_a_1.nii.gz  fixed -1018.7 1285.4             False  None
+train_10070_a_1.nii.gz  fixed -1024.0 1770.3             False  None
+train_10234_a_2.nii.gz  fixed -1024.0 1431.7             False  None
+train_10291_a_1.nii.gz  fixed -1019.2 1485.6             False  None
+train_10012_a_2.nii.gz  fixed -1024.0 1416.5             False  None
+train_10094_a_1.nii.gz  fixed -1024.0 1509.1             False  None
+train_10000_a_2.nii.gz  fixed -1116.8 1877.1             False  None
+ train_1075_a_2.nii.gz  fixed -1024.0 1203.2             False  None
+ train_1030_a_1.nii.gz  fixed -1516.6 3756.9             False  None
+train_10131_b_1.nii.gz  fixed -1024.0 1340.0             False  None
+train_10257_a_2.nii.gz  fixed -1024.0 1297.7             False  None
+train_10345_a_1.nii.gz  fixed -1024.0 1529.5             False  None
+train_10191_a_1.nii.gz  fixed -1019.2 1543.4             False  None
+ train_1042_a_2.nii.gz  fixed -1023.7 1435.2             False  None
+train_10032_a_1.nii.gz  fixed -1019.2 1272.3             False  None
+train_10004_a_2.nii.gz  fixed -1022.6 1687.9             False  None
+train_10164_a_1.nii.gz  fixed -1024.0 1912.8             False  None
+train_10039_a_1.nii.gz  fixed -8192.0 1526.0             False  None
+train_10210_a_1.nii.gz  fixed -3414.5 5415.5             False  None
+train_10236_a_1.nii.gz  fixed -8192.0 1775.9             False  None
+train_10081_a_2.nii.gz  fixed -1024.0 2762.3             False  None
+train_10015_a_2.nii.gz  fixed -1023.6 1367.3             False  None
+train_10242_a_1.nii.gz  fixed -1024.0 1409.7             False  None
+  train_101_b_1.nii.gz  fixed -8192.0 1225.3             False  None
+train_10321_c_1.nii.gz  fixed -1024.0 1927.9             False  None
+train_10039_a_2.nii.gz  fixed -8192.0 1538.6             False  None
+train_10190_a_1.nii.gz  fixed -1024.0 1999.2             False  None
+train_10092_a_2.nii.gz  fixed -1024.0 1470.3             False  None
+train_10002_a_1.nii.gz  fixed -8192.0 5233.4             False  None
+train_10145_a_2.nii.gz  fixed -1024.0 1323.1             False  None
+train_10156_a_1.nii.gz  fixed -1024.0 1167.2             False  None
+train_10076_a_1.nii.gz  fixed -1024.0 1548.5             False  None
+train_10212_a_2.nii.gz  fixed -1024.0 1305.0             False  None
+train_10107_a_2.nii.gz  fixed -1024.0 1163.8             False  None
+train_10248_a_1.nii.gz  fixed -2811.1 1772.4             False  None
+train_10026_a_2.nii.gz  fixed -8192.0 1462.9             False  None
+train_10035_a_1.nii.gz  fixed -1018.4 1354.8             False  None
+train_10321_a_2.nii.gz  fixed -1024.0 2494.2             False  None
+train_10318_a_1.nii.gz  fixed -1024.0 1179.0             False  None
+train_10291_a_2.nii.gz  fixed -1024.0 1750.5             False  None
+train_10208_a_2.nii.gz  fixed -1023.9 1735.4             False  None
+train_10265_a_1.nii.gz  fixed -8192.0 2334.7             False  None
+train_10321_d_1.nii.gz  fixed -1022.1 1536.6             False  None
+train_10125_a_2.nii.gz  fixed -1024.0 1585.1             False  None
+  train_102_c_1.nii.gz  fixed -8192.0 4622.2             False  None
+
+0 / 50 sampled files show the offset signature (min HU > 3000).
+PASS: sampled training data looks like genuine HU values. The earlier notebook offset issue was local-sample-only.
+
+============================================================
+COMPUTATIONAL COMPLEXITY  (device: cuda)
+============================================================
+
+Model 2 (3D, single-window)
+  Total params:     46.20M
+  Trainable params: 46.20M
+  FLOPs:            325.68 GFLOPs
+  Inference time:   85.6 ms/scan (forward pass only, batch size 1)
+
+Model 5 (3D, multi-window)
+  Total params:     46.24M
+  Trainable params: 46.24M
+  FLOPs:            417.76 GFLOPs
+  Inference time:   96.3 ms/scan (forward pass only, batch size 1)
+
+Model 4 (2.5D, frozen backbone)
+  Total params:     24.07M
+  Trainable params: 0.56M
+  FLOPs:            131.52 GFLOPs
+  Inference time:   30.6 ms/scan (forward pass only, batch size 1)
+
+Model 4 (2.5D, fine-tuned backbone)
+  Total params:     24.07M
+  Trainable params: 24.07M
+  FLOPs:            131.52 GFLOPs
+  Inference time:   30.6 ms/scan (forward pass only, batch size 1)
+
+--- LaTeX rows (Configuration & Total & Trainable & GFLOPs & ms/scan) ---
+Model 2 (3D, single-window)            & 46.2M & 46.2M & 325.68 & 85.6 \\
+Model 5 (3D, multi-window)             & 46.24M & 46.24M & 417.76 & 96.3 \\
+Model 4 (2.5D, frozen backbone)        & 24.07M & 0.56M & 131.52 & 30.6 \\
+Model 4 (2.5D, fine-tuned backbone)    & 24.07M & 24.07M & 131.52 & 30.6 \\
+
+Note: Model 4's single-window and multi-window arms share this exact
+architecture/FLOPs/latency (only pixel content differs, not tensor
+shape), so this table has one Model 4 row per backbone state
+(frozen/fine-tuned) rather than per windowing scheme.

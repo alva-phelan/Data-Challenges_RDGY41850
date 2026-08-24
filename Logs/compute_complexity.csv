@@ -1,0 +1,5 @@
+Configuration,Total params (M),Trainable params (M),GFLOPs,Inference (ms/scan)
+"Model 2 (3D, single-window)",46.2,46.2,325.68,85.6
+"Model 5 (3D, multi-window)",46.24,46.24,417.76,96.3
+"Model 4 (2.5D, frozen backbone)",24.07,0.56,131.52,30.6
+"Model 4 (2.5D, fine-tuned backbone)",24.07,24.07,131.52,30.6
